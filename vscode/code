@@ -1,0 +1,52 @@
+#!/bin/bash
+
+USERNAME=$(whoami)
+CONTAINER="/path/to/image.sif"
+
+absolute_path=$(realpath .)
+working_dir=$1
+
+if [[ -z $1 ]]
+then
+    working_dir="$absolute_path"
+fi
+
+if [[ ! $working_dir =~ ^\/ ]]
+then
+    working_dir="$absolute_path/$working_dir"
+fi
+
+if [[ ! -d $working_dir ]]
+then
+    echo "ERROR: path does not exist"
+    echo "$working_dir"
+    exit 1
+fi
+
+
+PORT=$(id -u $USERNAME)
+PORT=$(( ($PORT % 1000) + 50000 ))
+
+used_ports=$(netstat -tln | grep LISTEN)
+while [[ "$used_ports" =~ tcp.*:"$PORT".*LISTEN ]]; do 
+    PORT=$(( ($RANDOM % 1000) + 50000 ))
+done
+
+if [[ ! $(type -P "singularity") ]]; then
+    echo "TACC: Automatically loading the tacc-singularity module"
+    module load tacc-singularity
+fi
+
+singularity instance start $CONTAINER codeserver1 >$HOME/codeserver1.log 2>&1
+sleep 2
+singularity exec instance://codeserver1 /usr/local/bin/code-server --bind-addr "0.0.0.0:$PORT" $working_dir >>$HOME/codeserver1.log 2>&1 &
+sleep 10
+
+
+echo -e "\e[1;32m"
+echo -e "http://$(hostname):$PORT"
+cat ~/.config/code-server/config.yaml | grep '^password'
+echo -e "\e[0m"
+echo "To stop the code-server, type 'bash /scratch/projects/vscode/code-stop'."
+
+#wait

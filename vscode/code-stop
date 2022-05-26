@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ ! $(type -P "singularity") ]]; then
+    echo "TACC: Automatically loading the tacc-singularity module"
+    module load tacc-singularity
+fi
+
+singularity instance stop codeserver1
+sleep 1
+
+echo "TACC: VS Code server stopped"
