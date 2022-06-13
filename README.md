@@ -1,4 +1,4 @@
 ## Containerizing Visualization Software: Experiences and Best Practices
 
-Supporting materials for (insert citation here later)
+Supporting materials for https://doi.org/10.1145/3491418.3530769
 
