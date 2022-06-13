@@ -1,0 +1,17 @@
+#!/bin/bash
+
+RSTUDIO_SERVERDIR=$HOME/.rstudio
+
+if [ -f $RSTUDIO_SERVERDIR/.rstudio_lock ]; then
+
+    rm -f $RSTUDIO_SERVERDIR/.rstudio_lock
+    echo "Stopping RStudio..."
+    sleep 12
+    echo "Done"
+
+else
+
+    echo "RStudio is not running"
+
+fi
+
