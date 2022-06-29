@@ -1,0 +1,17 @@
+#!/bin/bash
+
+JUPYTER_SERVERDIR=$HOME/.jupyter
+
+if [ -f $JUPYTER_SERVERDIR/.jupyter_lock ]; then
+
+    rm -f $JUPYTER_SERVERDIR/.jupyter_lock
+    echo "Stopping Jupyter..."
+    sleep 12
+    echo "Done"
+
+else
+
+    echo "Jupyter is not running"
+
+fi
+
