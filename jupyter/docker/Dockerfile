@@ -41,10 +41,21 @@ RUN arch=$(uname -m) && \
     'r-rsqlite' \
     'r-shiny' \
     'r-tidyverse' \
-    'rpy2' \
     'unixodbc' && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
+
+# `r-tidymodels` and `rpy2` is not easy to install under arm
+RUN set -x && \
+    arch=$(uname -m) && \
+    if [ "${arch}" == "x86_64" ]; then \
+        mamba install --yes \
+            'r-tidymodels' \
+            'rpy2' && \
+            mamba clean --all -f -y && \
+            fix-permissions "${CONDA_DIR}" && \
+            fix-permissions "/home/${NB_USER}"; \
+    fi;
 
 WORKDIR "${HOME}"
