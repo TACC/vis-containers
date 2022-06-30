@@ -46,7 +46,7 @@ RUN arch=$(uname -m) && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-# `r-tidymodels` and `rpy2` is not easy to install under arm
+# `r-tidymodels` and `rpy2` are not easy to install under arm
 RUN set -x && \
     arch=$(uname -m) && \
     if [ "${arch}" == "x86_64" ]; then \
