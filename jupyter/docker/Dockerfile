@@ -1,4 +1,5 @@
-FROM jupyter/scipy-notebook:lab-3.4.3
+ARG BASE_CONTAINER=jupyter/scipy-notebook:lab-3.4.3
+FROM $BASE_CONTAINER
 LABEL maintainer="Erik Ferlanti <eferlanti@tacc.utexas.edu>"
 
 USER root
