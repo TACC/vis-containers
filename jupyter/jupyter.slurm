@@ -43,7 +43,7 @@ module unload xalt
 
 # make .jupyter dir for temp files
 JUPYTER_SERVERDIR=$HOME/.jupyter
-mkdir -p $JUPYTER
+mkdir -p $JUPYTER_SERVERDIR
 
 JUPYTER_LOGFILE=$JUPYTER_SERVERDIR/$NODE_HOSTNAME.log
 echo "TACC: using Jupyter image $JUPYTER_IMG"
@@ -55,10 +55,10 @@ LOCAL_PORT=8888
 
 echo "TACC: starting Jupyter server in singularity:"
 echo ""
-echo "singularity exec $JUPYTER_IMG"
+echo "singularity run $JUPYTER_IMG"
 echo ""
 
-nohup singularity exec $JUPYTER_IMG &> $JUPYTER_LOGFILE && rm -f $JUPYTER_SERVERDIR/.jupyter_lock &
+nohup singularity run $JUPYTER_IMG &> $JUPYTER_LOGFILE && rm -f $JUPYTER_SERVERDIR/.jupyter_lock &
 JUPYTER_PID=$!
 echo "$NODE_HOSTNAME $JUPYTER_PID" > $JUPYTER_SERVERDIR/.jupyter_lock
 sleep 30
