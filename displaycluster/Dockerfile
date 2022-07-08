@@ -362,24 +362,4 @@ WORKDIR /opt/apps
 
 COPY --from=builder /opt/apps/ ./
 
-RUN sed -i 's/display=\":0\"/display=\":1\"/g' configuration.xml
-
-CMD [ "startdisplaycluster" ]
-
-##### Running on Mac OS X #####
-
-# Heavily taken from following sources
-# * https://blog.jessfraz.com/post/docker-containers-on-the-desktop/
-# * https://github.com/moby/moby/issues/8710
-
-# open up terminal
-
-# $ brew install socat
-# $ brew cask install xquartz 
-# $ open -a XQuartz
-
-# create port to forward requests from docker to DC
-# $ socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\"
-
-# open up another window and run command to start container and set DISPLAY environment variable
-# $ docker run -e DISPLAY=192.168.0.27:0 displaycluster:latest
+RUN sed -i 's/display=\":0\"/display=\"host.docker.internal:0\"/g' configuration.xml
